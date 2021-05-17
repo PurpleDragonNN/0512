@@ -160,7 +160,6 @@
 <script>
 import bordeBox from '@/components/bordeBox.vue'
 import bordeBoxTriangle from '@/components/bordeBoxTriangle.vue'
-import 'echarts-liquidfill/src/liquidFill.js'
 export default {
   name: 'Home',
   components: {
@@ -218,7 +217,7 @@ export default {
       this.yuchangfenData()
       this.roujiData()
       this.youjifeiData()
-      this.fuhuaData()
+      // this.fuhuaData()
     },
     // 羽肠粉加工
     yuchangfenData () {
