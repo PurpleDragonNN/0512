@@ -1,12 +1,10 @@
 $fontColor: #00d7ff;
 
+
 .container{
   display: flex;
   flex-direction: column;
-  padding: 10px;
   box-sizing: border-box;
-  width: 1920px;
-  height: 1080px;
   overflow: hidden;
   background: url("../assets/img/background.png");
   background-size: contain;
