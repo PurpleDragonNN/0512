@@ -21,7 +21,7 @@
             </template>
           </bordeBox>
           <bordeBox class="fan-chart">
-            <template #boxTitle>肉鸡加工</template>
+            <template #boxTitle>用户增量走势</template>
             <template #boxMain>
               <div class="main-content">
                 <div class="content-left content-common">
@@ -63,29 +63,15 @@
         </div>
         <div class="main-right">
           <bordeBox class="video-box">
-            <template #boxTitle>监控视频展示区域</template>
+            <template #boxTitle>商家增长趋势</template>
             <template #boxMain>
+              <div ref="barChart" class="bar-chart_container"></div>
             </template>
           </bordeBox>
           <bordeBox class="wushui-box">
             <template #boxTitle>污水处理厂</template>
             <template #boxMain>
-              <div class="main-content">
-                <div class="wushui-left wushui-common">
-                  <span class="left-title">污水处理一厂</span>
-                  <p class="left-desc">
-                    <span>2000</span>立方米
-                  </p>
-                </div>
-                <div class="wushui-right wushui-common">
-                  <span class="left-title">污水处理二厂</span>
-                  <p class="left-desc">
-                    <span>7000</span>立方米
-                  </p>
-                </div>
-                <img src="../assets/img/wushui.png" alt="">
-                <p class="wushui-title">日处理污水量</p>
-              </div>
+              <div class="pie-chart_container" ref="pieChart"></div>
             </template>
           </bordeBox>
         </div>
@@ -205,6 +191,13 @@ var seriesData = [
     name: "南海诸岛", value: 0,
     itemStyle: {
       normal: {opacity: 0, label: {show: false}}
+    },
+    show: false,
+    label: {
+      show: false
+    },
+    tooltip: {
+      show: false
     }
   }
 ];
@@ -288,7 +281,6 @@ export default {
       this.digitalData = '234567.66'
       this.initEcharts("china")
       this.$forceUpdate();
-
     })
   },
   methods: {
@@ -302,10 +294,12 @@ export default {
       this.$router.push({path: './second'})
     },
     getEchartData () {
-      this.roujiData()
+      this.initLineData()
+      this.initBarData()
+      this.initPieData()
     },
-    // 肉鸡加工
-    roujiData () {
+    // 折线图
+    initLineData () {
       const myChart = new this.$charts(this.$refs.fanLeft)
       const options = {
         title: {
@@ -346,6 +340,65 @@ export default {
                 lineWidth: 0
               }
             },
+          }
+        ]
+      }
+      myChart.setOption(options)
+
+    },
+    // 柱状图
+    initBarData () {
+      const myChart = new this.$charts(this.$refs.barChart)
+      const options = {
+        xAxis: {
+          name: '月份',
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+          name: '数量',
+          data: 'value'
+        },
+        series: [
+          {
+            data: [2339, 1899, 2118, 1790, 3265, 4465, 3996],
+            type: 'bar',
+            gradient: {
+              color: ['#01eefe', '#00585c']
+            }
+          }
+        ]
+      }
+      myChart.setOption(options)
+
+    },
+    // 饼状图
+    initPieData () {
+      const myChart = new this.$charts(this.$refs.pieChart)
+      const options = {
+        legend: {
+          show: true,
+          data: {
+            name: 'asdf'
+          }
+        },
+        series: [
+          {
+            type: 'pie',
+            data: [
+              { name: '可口可乐', value: 5 },
+              { name: '百事可乐', value: 30 },
+              { name: '哇哈哈', value: 10 },
+              { name: '康师傅', value: 5 },
+            ],
+            radius: ['40%', '50%'],
+            insideLabel: {
+              show: true
+            },
+            outsideLabel: {
+              show: true
+            },
+            pieStyle: {
+            }
           }
         ]
       }
@@ -514,55 +567,17 @@ export default {
       .video-box{
         margin-bottom: 20px;
         width: 100%;
+        .bar-chart_container{
+          width: 100%;
+          height: 400px;
+        }
       }
 
       .wushui-box{
         position: relative;
-        .main-content{
+        .pie-chart_container{
           width: 100%;
           height: 320px;
-          .wushui-common{
-            color: $whiteColor;
-            top: 18%;
-            .left-title{
-
-            }
-            .left-desc{
-              span{
-                font-size: 30px;
-              }
-            }
-            &.wushui-left{
-              position: absolute;
-              left: 20%;
-              .left-desc{
-                color: rgba(111,236,255,.8);
-                span{
-                }
-              }
-            }
-            &.wushui-right{
-              position: absolute;
-              right: 16%;
-              .left-desc{
-                color: rgba(255,231,111,.8);
-                span{
-                }
-              }
-            }
-          }
-          img{
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            transform: translateX(-50%);
-          }
-          .wushui-title{
-            @extend img;
-            top: 90%;
-            font-size: 18px;
-            color: $whiteColor;
-          }
         }
       }
     }

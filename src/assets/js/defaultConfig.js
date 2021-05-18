@@ -1,6 +1,6 @@
 // chats默认配置
 const config = {
-  color: ['#fff','#fff','#fff'],
+  // color: ['#fff','#fff','#fff'],
   title: {
     style: {
       fontSize: 37,
@@ -21,7 +21,7 @@ const config = {
     axisLabel: {
       style: {
         fill: '#fff',
-        fontSize: 12,
+        fontSize: 15,
       }
     },
     nameTextStyle: {
@@ -43,7 +43,7 @@ const config = {
     axisLabel: {
       style: {
         fill: '#fff',
-        fontSize: 12,
+        fontSize: 15,
       }
     },
     nameTextStyle: {
