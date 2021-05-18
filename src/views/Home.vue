@@ -2,7 +2,7 @@
   <dv-full-screen-container>
     <div class="container">
       <div class="header">
-        <p class="title">圣越产业园</p>
+        <p class="title"></p>
         <div class="next-btn" @click="btnEvent">全产业链<img src="../assets/img/next.png" alt=""></div>
       </div>
       <div class="main">
@@ -36,8 +36,9 @@
             <template #boxTitle>产业园全景图</template>
             <template #boxMain>
               <div class="main-content">
-                <div class="banner-box">
-                  <img class="banner-img" src="../assets/img/banner.jpg" alt="">
+                <div class="map">
+                  <div id="china-map"></div>
+                  <dv-flyline-chart-enhanced class="flyline-chart" :config="config" dev style="width:1000px;height:900px;" />
                 </div>
               </div>
 
@@ -95,6 +96,118 @@
 
 <script>
 import bordeBox from '@/components/bordeBox.vue'
+require('../assets/js/china.js')
+var seriesData = [
+  {
+    name: '北京',
+    value: 100
+  }, {
+    name: '天津',
+    value: 0
+  }, {
+    name: '上海',
+    value: 60
+  }, {
+    name: '重庆',
+    value: 0
+  }, {
+    name: '河北',
+    value: 60
+  }, {
+    name: '河南',
+    value: 60
+  }, {
+    name: '云南',
+    value: 0
+  }, {
+    name: '辽宁',
+    value: 0
+  }, {
+    name: '黑龙江',
+    value: 0
+  }, {
+    name: '湖南',
+    value: 60
+  }, {
+    name: '安徽',
+    value: 0
+  }, {
+    name: '山东',
+    value: 60
+  }, {
+    name: '新疆',
+    value: 0
+  }, {
+    name: '江苏',
+    value: 0
+  }, {
+    name: '浙江',
+    value: 0
+  }, {
+    name: '江西',
+    value: 0
+  }, {
+    name: '湖北',
+    value: 60
+  }, {
+    name: '广西',
+    value: 60
+  }, {
+    name: '甘肃',
+    value: 0
+  }, {
+    name: '山西',
+    value: 60
+  }, {
+    name: '内蒙古',
+    value: 0
+  }, {
+    name: '陕西',
+    value: 0
+  }, {
+    name: '吉林',
+    value: 0
+  }, {
+    name: '福建',
+    value: 0
+  }, {
+    name: '贵州',
+    value: 0
+  }, {
+    name: '广东',
+    value: 597
+  }, {
+    name: '青海',
+    value: 0
+  }, {
+    name: '西藏',
+    value: 0
+  }, {
+    name: '四川',
+    value: 60
+  }, {
+    name: '宁夏',
+    value: 0
+  }, {
+    name: '海南',
+    value: 60
+  }, {
+    name: '台湾',
+    value: 0
+  }, {
+    name: '香港',
+    value: 0
+  }, {
+    name: '澳门',
+    value: 0
+  },
+  {
+    name: "南海诸岛", value: 0,
+    itemStyle: {
+      normal: {opacity: 0, label: {show: false}}
+    }
+  }
+];
 export default {
   name: 'Home',
   components: {
@@ -104,10 +217,68 @@ export default {
     return {
       isCloseAll: false,
       toolTipContent: {},
-      nowTime: '',
       activeVideo: '',
       isShowVideoDialog: false,
-      digitalData: '234567.66'
+      digitalData: '234567.66',
+      config: {
+        points: [
+          {
+            name: '郑州',
+            coordinate: [0.48, 0.35],
+            /*icon: {
+              src: '/img/flylineChart/mapCenterPoint.png',
+              width: 30,
+              height: 30
+            }*/
+          },
+          {
+            name: '新乡',
+            coordinate: [0.52, 0.23]
+          },
+          {
+            name: '焦作',
+            coordinate: [0.43, 0.29]
+          },
+          {
+            name: '开封',
+            coordinate: [0.59, 0.35]
+          },
+          {
+            name: '许昌',
+            coordinate: [0.53, 0.47]
+          },
+          {
+            name: '平顶山',
+            coordinate: [0.45, 0.54]
+          },
+        ],
+        lines: [
+          {
+            source: '郑州',
+            target: '新乡'
+          },
+          {
+            source: '郑州',
+            target: '焦作'
+          },
+          {
+            source: '郑州',
+            target: '开封'
+          },
+          {
+            source: '郑州',
+            target: '许昌'
+          },
+          {
+            source: '郑州',
+            target: '平顶山'
+          },
+        ],
+        /*icon: {
+          show: true,
+          src: '/img/flylineChart/mapPoint.png'
+        },*/
+      }
     }
   },
   mounted () {
@@ -115,28 +286,13 @@ export default {
     setTimeout(() => {
       this.getEchartData()
       this.digitalData = '234567.66'
+      this.initEcharts("china")
       this.$forceUpdate();
 
     })
-    setInterval(() => {
-      let date = new Date()
-      let week = new Date().getDay()
-      let weekObj = {
-        0: '天',
-        1: '一',
-        2: '二',
-        3: '三',
-        4: '四',
-        5: '五',
-        6: '六',
-      }
-      let month = date.getMonth()<10 ? '0'+(date.getMonth()+1) : date.getMonth()
-      this.nowTime = `${month}-${date.getDate()}-${date.getFullYear()} 星期${weekObj[week]} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-    },1000)
   },
   methods: {
     formatDigital (item) {
-      console.log(item);
       return item === '.' ? '.' :{
         number: [Number(item)],
         content: '{nt}'
@@ -197,11 +353,68 @@ export default {
 
     },
 
+
+    initEcharts(pName, Chinese_) {
+      var option = {
+        tooltip: {
+          show: true,
+          formatter: (val => {
+            return `<p style="color: rgba(255,255,255, .8)">省内商家数 &nbsp;<span style="color: #0550c3">${val.data.value}</span></p>
+<p style="color: rgba(255,255,255, .8)">省内代理数 &nbsp;<span style="color: #0550c3">${val.data.value}</span></p>`
+          })
+        },
+        series: [
+          {
+            name: Chinese_ || pName,
+            type: 'map',
+            mapType: pName,
+            roam: true,//是否开启鼠标缩放和平移漫游
+            data: seriesData,
+            top: "middle",//组件距离容器的距离
+            zoom:1.2,
+            selectedMode : 'single',
+            tooltip: {
+              backgroundColor: 'rgba(2, 25, 93, .4)'
+            },
+
+            label: {
+              normal: {
+                show: true,//显示省份标签
+                textStyle:{color:"#fbfdfe"}//省份标签字体颜色
+              },
+              emphasis: {//对应的鼠标悬浮效果
+                show: true,
+                textStyle:{color:"#323232"}
+              }
+            },
+            itemStyle: {
+              normal: {
+                borderWidth: .5,//区域边框宽度
+                borderColor: '#0550c3',//区域边框颜色
+                areaColor:"rgba(55, 162, 218, .6)",//区域颜色
+
+              },
+
+              emphasis: {
+                borderWidth: .5,
+                borderColor: '#4b0082',
+                areaColor:"#ece39e",
+              }
+            },
+          }
+        ]
+
+      };
+      let myChart = this.$echarts.init(document.getElementById('china-map'));
+      myChart.setOption(option);
+
+      myChart.off("click");
+    },
   }
 }
 </script>
 <style scoped lang="scss">
-@import "src/assets/css/common";
+@import "@/assets/css/common.scss";
   .main{
     position: relative;
     display: flex;
@@ -217,7 +430,7 @@ export default {
           width: 100%;
           height: 100%;
           .digital-container{
-            color: #fff;
+            color: $whiteColor;
             &>*{
               height: 60px;
               line-height: 60px;
@@ -253,11 +466,21 @@ export default {
         margin-bottom: 10px;
         .main-content{
           width: 100%;
-          .banner-box{
+          .map{
             position: relative;
-
-            .banner-img{
+            width: 1000px;
+            height: 900px;
+            .flyline-chart{
+              pointer-events: none;
+              position: absolute;
+              top: 0;
+              left: 0;
+            }
+            #china-map{
+              pointer-events: auto;
               width: 100%;
+              height: 100%;
+              @extend .flyline-chart
             }
           }
         }
@@ -267,7 +490,7 @@ export default {
         .main-content{
           display: flex;
           padding: 19px 22px;
-          color: #fff;
+          color: $whiteColor;
           font-size: 20px;
           img{
             margin-right: 20px;
@@ -299,7 +522,7 @@ export default {
           width: 100%;
           height: 320px;
           .wushui-common{
-            color: #fff;
+            color: $whiteColor;
             top: 18%;
             .left-title{
 
@@ -338,7 +561,7 @@ export default {
             @extend img;
             top: 90%;
             font-size: 18px;
-            color: #fff;
+            color: $whiteColor;
           }
         }
       }

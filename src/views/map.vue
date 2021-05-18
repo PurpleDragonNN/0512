@@ -2,7 +2,7 @@
   <dv-full-screen-container>
     <div class="map">
       <div id="china-map"></div>
-      <dv-flyline-chart-enhanced class="flyline-chart" :config="config" dev style="width:1000px;height:900px;" />
+      <dv-flyline-chart class="flyline-chart" :config="config" dev style="width:1000px;height:900px;" />
     </div>
   </dv-full-screen-container>
 </template>
