@@ -27,14 +27,15 @@ export default {
   display: flex;
   flex-direction: column;
   .box-header{
-    padding-left: 16px;
+    padding-left: 36px;
     width: 100%;
-    height: 44px;
-    line-height: 44px;
-    color: #4cf6f3;
+    height: 42px;
+    line-height: 42px;
+    color: #c8dbf4;
     font-size: 20px;
-    background: url("../assets/img/title__xxkctj_bg.png") no-repeat;
-    background-size: cover;
+    background: url("../assets/img/title.png") no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
     box-sizing: border-box;
   }
   .box-main{
@@ -42,8 +43,6 @@ export default {
     width: 100%;
   }
   .bg-border{
-    background: url("../assets/img/box-border.png") no-repeat;
-    background-size: 100% 100%;
   }
 }
 </style>

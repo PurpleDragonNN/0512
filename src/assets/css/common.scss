@@ -1,29 +1,36 @@
-$fontColor: #00d7ff;
+$fontColor: #c8dbf4;
 $whiteColor: rgba(255,255,255, .8);
 
+.full-container{
+  width: 100%;
+  height: 100%;
+}
 .container{
   display: flex;
   flex-direction: column;
+  position: relative;
   box-sizing: border-box;
   overflow: hidden;
-  background: url("../assets/img/background.png");
-  background-size: contain;
+  background: url("../assets/img/background.png") no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
   .header{
     position: relative;
     width: 100%;
-    height: 135px;
-    //background: url(../assets/img/tittle.png?0413) no-repeat;
-    background-size: 90%;
-    background-position: center -10px;
+    height: 110px;
+    line-height: 77px;
+    background: url(../assets/img/tittle.png?0413) no-repeat;
+    background-position: center 0;
+    pointer-events: none;
     .title{
       margin: 0 auto;
       width: 100%;
-      font-size: 44px;
+      font-size: 36px;
       font-weight: bold;
       text-align: center;
-      color: #4fe2fd;
       background-size: contain;
-      background-image: -webkit-linear-gradient(bottom, rgb(156, 231, 247), rgb(32, 201, 235));
+      background-image: -webkit-linear-gradient(bottom, rgb(185, 207, 255), rgb(255, 255, 255));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }

@@ -1,20 +1,29 @@
 <template>
-  <dv-full-screen-container>
+  <div class="full-container">
     <div class="container">
       <div class="header">
-        <p class="title"></p>
-        <div class="next-btn" @click="btnEvent">全产业链<img src="../assets/img/next.png" alt=""></div>
+        <p class="title">贯鱼数据监控大屏</p>
       </div>
       <div class="main">
         <div class="main-left">
-          <bordeBox class="pie-chart">
-            <template #boxTitle>羽肠粉加工</template>
+          <bordeBox class="digital-chart">
+            <template #boxTitle>电商数据</template>
             <template #boxMain>
               <div class="main-content">
-                <div class="digital-container" v-for="item in String(digitalData)">
-                  <div v-if="item === '.'" class="digital-dot">.</div>
-                  <div v-else class="digital-box">
-                    <dv-digital-flop :config="formatDigital(item)" style="width:100%;height:100%" />
+                <p class="digital-chart_title">日销售额</p>
+                <div class="digital-items">
+                  <div class="digital-item" v-for="item in String(digitalData)">
+                    <div v-if="item === '.'" class="digital-dot">.</div>
+                    <div v-else class="digital-box">
+                      <dv-digital-flop :config="formatDigital(item)" style="width:100%;height:100%" />
+                    </div>
+                  </div>
+                </div>
+                <div class="digital-bar">
+                  <div class="digital-bar_title">1416787.00</div>
+                  <div class="digital-bar_main">
+                    <div class="digital-bar_desc">用户量</div>
+                    <div class="digital-bar_chart" ref="digitalBar"></div>
                   </div>
                 </div>
               </div>
@@ -33,43 +42,49 @@
         </div>
         <div class="main-middle">
           <bordeBox class="banner" noBorder>
-            <template #boxTitle>产业园全景图</template>
             <template #boxMain>
               <div class="main-content">
                 <div class="map">
                   <div id="china-map"></div>
-                  <dv-flyline-chart-enhanced class="flyline-chart" :config="config" dev style="width:1000px;height:900px;" />
+                  <dv-flyline-chart-enhanced class="flyline-chart" :config="config" dev style="width:100%;height:100%;" />
+                  <img src="../assets/img/map-shadow.png" class="map-shadow"/>
                 </div>
               </div>
 
             </template>
           </bordeBox>
           <bordeBox class="introduction">
-            <template #boxTitle>产业园介绍</template>
+            <template #boxTitle>大额订单</template>
             <template #boxMain>
               <div class="main-content">
-                <img src="../assets/img/img-introducation.png" alt="">
-                <div class="introduction-text">
-                  <p class="introduction-title">
-                    <span>圣越产业园建有:</span> 总占地：585亩
-                  </p>
-                  <p class="introduction-desc">
-                    甘肃圣越农牧发展有限公司位于甘肃省庆阳市镇原县金龙工业集中区，成立于2020年7月，注册资金3.5亿元，是福建圣农控股集团旗下的一家集饲料加工、种鸡养殖、种蛋孵化、肉鸡饲养、肉鸡加工、产品销售为一体的肉鸡生产加工企业，是农业产业化国家重点龙头企业。
-                  </p>
-                </div>
+                <dv-scroll-board :config="scrollConfig" style="width:100%;height:269px" />
               </div>
             </template>
           </bordeBox>
         </div>
         <div class="main-right">
-          <bordeBox class="video-box">
+          <bordeBox class="tongji-box">
+            <template #boxTitle>统计数据</template>
+            <template #boxMain>
+              <div class="box-main">
+                <div class="main-item" v-for="item in tongjishuju">
+                  <img :src="item.imgUrl" alt="">
+                  <div class="main-item_right">
+                    <p class="title">{{item.title}}</p>
+                    <p class="subtitle">{{item.subtitle}}</p>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </bordeBox>
+          <bordeBox class="shangjia-box">
             <template #boxTitle>商家增长趋势</template>
             <template #boxMain>
               <div ref="barChart" class="bar-chart_container"></div>
             </template>
           </bordeBox>
           <bordeBox class="wushui-box">
-            <template #boxTitle>污水处理厂</template>
+            <template #boxTitle>代理月收益额</template>
             <template #boxMain>
               <div class="pie-chart_container" ref="pieChart"></div>
             </template>
@@ -77,7 +92,7 @@
         </div>
       </div>
     </div>
-  </dv-full-screen-container>
+  </div>
 </template>
 
 <script>
@@ -213,68 +228,106 @@ export default {
       activeVideo: '',
       isShowVideoDialog: false,
       digitalData: '234567.66',
+      tongjishuju: [
+        {
+          imgUrl: require('../assets/img/tongji1.png'),
+          title: '30',
+          subtitle: '订单总额',
+        },
+        {
+          imgUrl: require('../assets/img/tongji2.png'),
+          title: '42',
+          subtitle: '销售总量（万元）',
+        },
+        {
+          imgUrl: require('../assets/img/tongji3.png'),
+          title: '88',
+          subtitle: '人均消费',
+        },
+        {
+          imgUrl: require('../assets/img/tongji4.png'),
+          title: '82',
+          subtitle: '近10分钟新增订单',
+        },
+      ],
       config: {
+        icon: {
+          show: true,
+          src: require('../assets/img/zuobiao.png'),
+          width: 50,
+          height: 50
+        },
         points: [
           {
-            name: '郑州',
-            coordinate: [0.48, 0.35],
-            /*icon: {
-              src: '/img/flylineChart/mapCenterPoint.png',
-              width: 30,
-              height: 30
-            }*/
+            name: '内蒙古',
+            coordinate: [0.59, 0.37],
+            icon: {
+              show: true,
+              src: require('../assets/img/zuobiao-center.png'),
+              width: 50,
+              height: 50
+            },
+            halo: {
+              show: true,
+            },
           },
           {
-            name: '新乡',
-            coordinate: [0.52, 0.23]
+            name: '青海省',
+            coordinate: [0.36, 0.52]
           },
           {
-            name: '焦作',
-            coordinate: [0.43, 0.29]
+            name: '四川省',
+            coordinate: [0.48, 0.66]
           },
           {
-            name: '开封',
-            coordinate: [0.59, 0.35]
-          },
-          {
-            name: '许昌',
-            coordinate: [0.53, 0.47]
-          },
-          {
-            name: '平顶山',
-            coordinate: [0.45, 0.54]
+            name: '北京市',
+            coordinate: [0.68, 0.35]
           },
         ],
         lines: [
           {
-            source: '郑州',
-            target: '新乡'
+            source: '内蒙古',
+            target: '青海省'
           },
           {
-            source: '郑州',
-            target: '焦作'
+            source: '内蒙古',
+            target: '四川省',
+            color: '#00feff'
           },
           {
-            source: '郑州',
-            target: '开封'
-          },
-          {
-            source: '郑州',
-            target: '许昌'
-          },
-          {
-            source: '郑州',
-            target: '平顶山'
+            source: '内蒙古',
+            target: '北京市'
           },
         ],
-        /*icon: {
-          show: true,
-          src: '/img/flylineChart/mapPoint.png'
-        },*/
+        line: {
+          width: 2
+        },
+      },
+      scrollConfig: {
+        header: ['列1', '列2', '列3', '列4', '列5', '列6'],
+        data: [
+          ['行1列1', '行1列2', '行1列3','行1列1', '行1列2', '行1列3'],
+          ['行2列1', '行2列2', '行2列3','行2列1', '行2列2', '行2列3'],
+          ['行3列1', '行3列2', '行3列3','行3列1', '行3列2', '行3列3'],
+          ['行4列1', '行4列2', '行4列3','行4列1', '行4列2', '行4列3'],
+          ['行5列1', '行5列2', '行5列3','行5列1', '行5列2', '行5列3'],
+          ['行6列1', '行6列2', '行6列3','行6列1', '行6列2', '行6列3'],
+          ['行7列1', '行7列2', '行7列3','行7列1', '行7列2', '行7列3'],
+          ['行8列1', '行8列2', '行8列3','行8列1', '行8列2', '行8列3'],
+          ['行9列1', '行9列2', '行9列3','行9列1', '行9列2', '行9列3'],
+          ['行10列1', '行10列2', '行10列3','行10列1', '行10列2', '10列3']
+        ],
+        columnWidth: [150],
+        headerBGC: 'rgba(19,34,57,1)',
+        oddRowBGC: 'rgba(1,1,1,0)',
+        evenRowBGC: 'rgba(12,24,53,.85)',
+        headerHeight: 42,
       }
     }
   },
   mounted () {
+    this.resizeFn()
+    window.onresize = this.resizeFn
     this.digitalData = Array(String(this.digitalData).length-1).fill(0).join('')
     setTimeout(() => {
       this.getEchartData()
@@ -284,10 +337,23 @@ export default {
     })
   },
   methods: {
+    resizeFn () {
+      let win_w = document.documentElement.clientWidth ||  document.body.clientWidth
+      let win_h = document.documentElement.clientHeight || document.body.clientHeight
+      let ratioX = win_w / 1920
+      let ratioY = win_h / 1080;
+      this.resize = {
+        transform: "scale(" + ratioX + ", " + ratioY + ")",
+        transformOrigin: "left top",
+      }
+    },
     formatDigital (item) {
       return item === '.' ? '.' :{
         number: [Number(item)],
-        content: '{nt}'
+        content: '{nt}',
+        style: {
+          fill: '#fff'
+        }
       }
     },
     btnEvent () {
@@ -297,20 +363,106 @@ export default {
       this.initLineData()
       this.initBarData()
       this.initPieData()
+      this.initSmallBarData()
+    },
+    initSmallBarData () {
+      let barLeft = this.$echarts.init(this.$refs.digitalBar);
+      // 指定图表的配置项和数据
+      let option = (option) => ( {
+        tooltip: {
+          show: true,
+          formatter: function() {
+            return option.toolTip
+          }
+        },
+        grid: {   // 直角坐标系内绘图网格
+          left: '0',  //grid 组件离容器左侧的距离,
+          //也可以是'80%'这样相对于容器高度的百分比
+          top: '0',
+          right: '0',
+          bottom: '0',
+        },
+        xAxis: {  //直角坐标系grid中的x轴,
+          type: 'value',//坐标轴类型,分别有：
+                        //'value'-数值轴；'category'-类目轴;
+                        //'time'-时间轴;'log'-对数轴
+          splitLine: {show: false},//坐标轴在 grid 区域中的分隔线
+          axisLabel: {show: false},//坐标轴刻度标签
+          axisTick: {show: false},//坐标轴刻度
+          axisLine: {show: false},//坐标轴轴线
+        },
+        yAxis: {
+          type: 'category',
+          axisTick: {show: false},
+          axisLine: {show: false},
+          axisLabel: {show: false},
+          data: ['a']//类目数据，在类目轴（type: 'category'）中有效。
+          //如果没有设置 type，但是设置了axis.data,则认为type 是 'category'。
+        },
+        series: [//系列列表。每个系列通过 type 决定自己的图表类型
+          {
+            name: '%',//系列名称
+            type: 'bar',//柱状、条形图
+            barWidth: 24,//柱条的宽度,默认自适应
+            data: [90],//系列中数据内容数组
+            itemStyle: {//图形样式
+              borderRadius: 4,//柱条圆角半径,单位px.
+              //也可以分开设置[10,10,10,10]顺时针左上、右上、右下、左下
+              color: new this.$echarts.graphic.LinearGradient(
+                  0, 0, 1, 0,
+                  [{
+                    offset: 0,
+                    color: option.color1
+                  },
+                    {
+                      offset: 1,
+                      color: option.color2
+                    }
+                  ]
+              )
+            },
+            zlevel:1//柱状图所有图形的 zlevel 值,
+                    //zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面
+          },
+          {
+            name: '进度条背景',
+            type: 'bar',
+            barGap: '-100%',//不同系列的柱间距离，为百分比。
+            // 在同一坐标系上，此属性会被多个 'bar' 系列共享。
+            // 此属性应设置于此坐标系中最后一个 'bar' 系列上才会生效，
+            //并且是对此坐标系中所有 'bar' 系列生效。
+            barWidth: 24,
+            data: [100],
+            color: '#000b33',//柱条颜色
+            itemStyle: {
+              borderColor: "#fff",
+              borderRadius: 4
+            }
+          }
+        ]
+      })
+
+      // 使用刚指定的配置项和数据显示图表。
+      barLeft.setOption(option({
+        color1: '#0093ff',
+        color2: '#00e1ff',
+        toolTip: '56万'
+      }));
     },
     // 折线图
     initLineData () {
       const myChart = new this.$charts(this.$refs.fanLeft)
       const options = {
         title: {
-          text: '周销售额趋势',
+          text: '新增用户量',
           style: {
-            fill: '#24c8fb'
+            fill: '#25c7fd',
+            fontSize: 17,
           }
         },
         xAxis: {
           name: '日期',
-          data: ['4-29', '4-30', '5-01', '5-02', '5-03', '5-04', '5-05'],
+          data: ['4-29', '4-30', '5-01', '5-02', '5-03', '5-04', '5-05', '5-06', '5-07', '5-08'],
         },
         yAxis: {
           name: '数量',
@@ -318,7 +470,7 @@ export default {
         },
         series: [
           {
-            data: [1200, 2230, 1900, 2100, 3500, 4200, 3985],
+            data: [1200, 2230, 1900, 2100, 3500, 4200, 3985, 5500, 6200, 7985],
             type: 'line',
             label:{
               show: false
@@ -343,6 +495,9 @@ export default {
           }
         ]
       }
+      /*options.xAxis.data.forEach((item,index,arr) => {
+        arr[index] += '日'
+      })*/
       myChart.setOption(options)
 
     },
@@ -352,7 +507,7 @@ export default {
       const options = {
         xAxis: {
           name: '月份',
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+          data: ['1月', '2月', '3月', '4月', '5月', '6月']
         },
         yAxis: {
           name: '数量',
@@ -360,7 +515,7 @@ export default {
         },
         series: [
           {
-            data: [2339, 1899, 2118, 1790, 3265, 4465, 3996],
+            data: [2339, 1899, 2118, 1790, 3265, 4465],
             type: 'bar',
             gradient: {
               color: ['#01eefe', '#00585c']
@@ -373,32 +528,59 @@ export default {
     },
     // 饼状图
     initPieData () {
-      const myChart = new this.$charts(this.$refs.pieChart)
+      const myChart = this.$echarts.init(this.$refs.pieChart)
       const options = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} : {c} ({d}%)'
+        },
         legend: {
-          show: true,
-          data: {
-            name: 'asdf'
+          top: '10%',
+          left: 'center',
+          textStyle: {
+            color: '#fff',
           }
         },
         series: [
           {
+            name: '代理月收益额',
             type: 'pie',
+            radius: ['30%', '50%'],
+            top: '20%',
+            avoidLabelOverlap: false,
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '40',
+                fontWeight: 'bold'
+              }
+            },
+            label:{
+              color: "#fff",
+              fontSize: 16,
+              formatter: '{b}({d}%)'
+            },
+            labelLine: {
+              lineStyle: {
+                color: '#e46a64',
+              }
+            },
             data: [
-              { name: '可口可乐', value: 5 },
-              { name: '百事可乐', value: 30 },
-              { name: '哇哈哈', value: 10 },
-              { name: '康师傅', value: 5 },
+              { name: '可口可乐', value: 10 },
+              { name: '百事可乐', value: 60 },
+              { name: '哇哈哈', value: 20 },
+              { name: '康师傅', value: 10 },
             ],
-            radius: ['40%', '50%'],
-            insideLabel: {
-              show: true
+            itemStyle: {
+              color: function (params) {
+                var colorList = [
+                  '#e46a64', '#28b1fc', '#8b6bed','#f9dd6c'
+                ];
+                return colorList[params.dataIndex]
+              },
+              shadowBlur: 200,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
             },
-            outsideLabel: {
-              show: true
-            },
-            pieStyle: {
-            }
           }
         ]
       }
@@ -412,8 +594,8 @@ export default {
         tooltip: {
           show: true,
           formatter: (val => {
-            return `<p style="color: rgba(255,255,255, .8)">省内商家数 &nbsp;<span style="color: #0550c3">${val.data.value}</span></p>
-<p style="color: rgba(255,255,255, .8)">省内代理数 &nbsp;<span style="color: #0550c3">${val.data.value}</span></p>`
+            return `<p style="color: rgba(255,255,255, .8)">省内商家数 &nbsp;<span style="color: #00aeff">${val.data.value}</span></p>
+<p style="color: rgba(255,255,255, .8)">省内代理数 &nbsp;<span style="color: #00aeff">${val.data.value}</span></p>`
           })
         },
         series: [
@@ -421,13 +603,13 @@ export default {
             name: Chinese_ || pName,
             type: 'map',
             mapType: pName,
-            roam: true,//是否开启鼠标缩放和平移漫游
+            roam: false,//是否开启鼠标缩放和平移漫游
             data: seriesData,
             top: "middle",//组件距离容器的距离
             zoom:1.2,
             selectedMode : 'single',
             tooltip: {
-              backgroundColor: 'rgba(2, 25, 93, .4)'
+              backgroundColor: 'rgba(0, 29, 122, .6)'
             },
 
             label: {
@@ -443,8 +625,31 @@ export default {
             itemStyle: {
               normal: {
                 borderWidth: .5,//区域边框宽度
-                borderColor: '#0550c3',//区域边框颜色
-                areaColor:"rgba(55, 162, 218, .6)",//区域颜色
+                borderColor: '#4df0fb',//区域边框颜色
+                // areaColor:"rgba(5, 85, 201, 1)",//区域颜色
+                areaColor:{
+                  type: 'radial',
+                  x: 0.5,
+                  y: 0.5,
+                  r: 0.5,
+                  colorStops: [
+                    {
+                      offset: 0, color: '#0674e5' // 0% 处的颜色
+                    },
+                    {
+                      offset: 0.3, color: '#0564d9' // 0% 处的颜色
+                    },
+                    {
+                      offset: 0.6, color: '#0456da' // 100% 处的颜色
+                    },
+                    {
+                      offset: 1, color: '#0237cd' // 100% 处的颜色
+                    }
+                  ],
+                  global: false // 缺省为 false
+                },//区域颜色
+                shadowColor: 'rgba(255, 255, 255, 0.5)',
+                shadowBlur: 10,
 
               },
 
@@ -469,65 +674,118 @@ export default {
 <style scoped lang="scss">
 @import "@/assets/css/common.scss";
   .main{
-    position: relative;
+    position: absolute;
+    top: 87px;
+    left: 0;
     display: flex;
     flex: 1;
+    height: calc(100vh - 87px);
     width: 100%;
+    background: none;
     &-left{
+      display: flex;
+      flex-direction: column;
+      padding: 0 14px;
       flex: 1;
-      .pie-chart{
-        height: 300px;
-        margin-bottom: 20px;
+      background: rgba(3,19,60,.5);
+      .digital-chart{
+        height: 488px;
+        color: #fff;
         .main-content{
-          display: flex;
           width: 100%;
           height: 100%;
-          .digital-container{
-            color: $whiteColor;
-            &>*{
-              height: 60px;
-              line-height: 60px;
+          .digital-chart_title{
+            margin: 40px 0 20px;
+            font-size: 18px;
+            color: $fontColor;
+          }
+          .digital-items{
+            display: flex;
+            .digital-item{
+              color: $whiteColor;
+              &>*{
+                height: 60px;
+                line-height: 60px;
 
+              }
+
+              .digital-box{
+                margin-right: 10px;
+                width: 50px;
+                text-align: center;
+                background: rgba(47,95,233,.15);
+                border: 1px solid #2a5ce5;
+              }
+              .digital-dot{
+                font-weight: bold;
+                padding: 20px 10px 0 0;
+              }
             }
-
-            .digital-box{
-              margin-right: 10px;
-              width: 50px;
-              text-align: center;
-              border: 1px solid #00d7ff;
+          }
+          .digital-bar{
+            margin-top: 40px;
+            padding: 12px 20px;
+            background: url("../assets/img/digital-bg.png") no-repeat;
+            background-size: 100% 100%;
+            width: 362px;
+            height: 105px;
+            box-sizing: border-box;
+            &_title{
+              margin-bottom: 10px;
+              font-size: 34px;
             }
-            .digital-dot{
-
+            &_main{
+              display: flex;
+              width: 100%;
+              .digital-bar_desc{
+                margin-right: 20px;
+                white-space: nowrap;
+                font-size: 18px;
+              }
+              .digital-bar_chart{
+                flex: 1;
+                height: 27px;
+              }
             }
           }
         }
       }
 
       .fan-chart{
-        height: 520px;
+        flex: 1;
         .fan-common{
           width: 100%;
-          height: 500px;
+          height: 459px;
         }
       }
     }
     &-middle{
       margin: 0 10px;
-      flex: 1.5;
+      width: 939px;
       .banner{
         width: 100%;
-        margin-bottom: 10px;
+        ::v-deep .box-header{
+          display: none;
+        }
         .main-content{
           width: 100%;
           .map{
             position: relative;
-            width: 1000px;
-            height: 900px;
+            width: 100%;
+            height: 663px;
             .flyline-chart{
               pointer-events: none;
               position: absolute;
               top: 0;
               left: 0;
+            }
+            .map-shadow{
+              position: relative;
+              margin-top: 33px;
+              pointer-events: none;
+              width: 100%;
+              height: 100%;
+              opacity: 0.6;
             }
             #china-map{
               pointer-events: auto;
@@ -540,22 +798,19 @@ export default {
       }
 
       .introduction{
+        ::v-deep .box-header{
+          background: url("../assets/img/longTitle.png") no-repeat;
+          background-size: 100% 100%;
+          background-position: center;
+        }
         .main-content{
           display: flex;
-          padding: 19px 22px;
-          color: $whiteColor;
-          font-size: 20px;
-          img{
-            margin-right: 20px;
-            width: 237px;
-          }
-          .introduction-text{
-            line-height: 1.8;
-            .introduction-title{
-              margin-bottom: 10px;
-              span{
-                font-size: 22px;
-                color: $fontColor;
+          ::v-deep .dv-scroll-board{
+            .header{
+              color: #48ece7;
+            }
+            .rows{
+              .row-item{
               }
             }
           }
@@ -563,21 +818,52 @@ export default {
       }
     }
     &-right{
+      background: rgba(3,19,60,.5);
       flex: 1;
-      .video-box{
-        margin-bottom: 20px;
+      .tongji-box{
         width: 100%;
+        height: 306px;
+        .box-main{
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          .main-item{
+            display: flex;
+            padding: 40px 14px;
+            width: 49%;
+            color: #fff;
+            img{
+              width: 36px;
+              height: 41px;
+              margin-right: 20px;
+            }
+            .main-item_right{
+              .title{
+                font-size: 24px;
+              }
+              .subtitle{
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+
+      .shangjia-box{
+        height: 341px;
         .bar-chart_container{
           width: 100%;
-          height: 400px;
+          height: 100%;
         }
       }
 
       .wushui-box{
         position: relative;
+        margin-top: 16px;
+        height: 312px;
         .pie-chart_container{
           width: 100%;
-          height: 320px;
+          height: 100%;
         }
       }
     }
