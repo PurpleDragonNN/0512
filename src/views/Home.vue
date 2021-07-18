@@ -1,5 +1,5 @@
 <template>
-  <div class="full-container">
+  <div class="full-container" :style="resize">
     <div class="container">
       <div class="header">
         <p class="title">贯鱼数据监控大屏</p>
@@ -224,6 +224,7 @@ export default {
   data () {
     return {
       isCloseAll: false,
+      resize: {},
       toolTipContent: {},
       activeVideo: '',
       isShowVideoDialog: false,
@@ -338,6 +339,7 @@ export default {
   },
   methods: {
     resizeFn () {
+      console.log(234);
       let win_w = document.documentElement.clientWidth ||  document.body.clientWidth
       let win_h = document.documentElement.clientHeight || document.body.clientHeight
       let ratioX = win_w / 1920
@@ -355,9 +357,6 @@ export default {
           fill: '#fff'
         }
       }
-    },
-    btnEvent () {
-      this.$router.push({path: './second'})
     },
     getEchartData () {
       this.initLineData()
